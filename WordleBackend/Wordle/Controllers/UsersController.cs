@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.Data;
@@ -28,6 +29,11 @@ namespace Wordle.Controllers {
             string token = _authenticationService.loginUser(loginDTO);
 
             return Ok(token);
+        }
+
+        [HttpGet("test"), Authorize]
+        public string Test() {
+            return "test";
         }
     }
 }

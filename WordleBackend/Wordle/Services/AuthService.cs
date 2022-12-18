@@ -50,7 +50,7 @@ namespace Wordle.Services {
         }
         private string CreateToken(User user) {
             List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.FirstName + user.LastName)
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
