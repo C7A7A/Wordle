@@ -11,13 +11,15 @@ namespace Wordle.Services {
     public class AuthService : IAuthService {
         private readonly ApplicationDBContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(ApplicationDBContext context, IConfiguration configuration) {
+        public AuthService(ApplicationDBContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) {
             _context = context;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public UserDTO registerUser(RegisterDTO registerDTO) {
+        public UserDTO RegisterUser(RegisterDTO registerDTO) {
             string password = registerDTO.Password;
 
             if (IsDataValid(registerDTO.Email, registerDTO.Password, registerDTO.PasswordConfirmation) == false) {
@@ -34,7 +36,7 @@ namespace Wordle.Services {
             return new UserDTO(user.Email, user.FirstName, user.LastName);
         }
 
-        public string loginUser(LoginDTO loginDTO) {
+        public string LoginUser(LoginDTO loginDTO) {
             var user = _context.Users.FirstOrDefault(u => u.Email == loginDTO.Email);
 
             if (user == null) {
@@ -48,6 +50,25 @@ namespace Wordle.Services {
             string token = CreateToken(user);
             return token;
         }
+
+        public UserDTO GetUser() {
+            UserDTO userDTO = new();
+
+            if (_httpContextAccessor != null) {
+                string loggedUserEmail = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                User? user = _context.Users.FirstOrDefault(u => u.Email == loggedUserEmail);
+                if (user != null) {
+                    userDTO = MaptoDTO(user);
+                }
+            }
+
+            return userDTO;
+        }
+
+        private static UserDTO MaptoDTO(User user) {
+            return new UserDTO(user.Email, user.FirstName, user.LastName);
+        }
+
         private string CreateToken(User user) {
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, user.Email)

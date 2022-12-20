@@ -3,7 +3,8 @@ using Wordle.Models;
 
 namespace Wordle.Services {
     public interface IAuthService {
-        string loginUser(LoginDTO loginDTO);
-        UserDTO registerUser(RegisterDTO registerDTO);
+        string LoginUser(LoginDTO loginDTO);
+        UserDTO RegisterUser(RegisterDTO registerDTO);
+        UserDTO GetUser();
     }
 }

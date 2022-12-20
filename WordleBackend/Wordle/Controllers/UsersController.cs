@@ -19,14 +19,14 @@ namespace Wordle.Controllers {
 
         [HttpPost]
         public ActionResult<UserDTO> Register(RegisterDTO registerDTO) {
-            UserDTO user = _authenticationService.registerUser(registerDTO);
+            UserDTO user = _authenticationService.RegisterUser(registerDTO);
 
             return Ok(user);
         }
 
         [HttpGet]
         public ActionResult<string> Login(LoginDTO loginDTO) {
-            string token = _authenticationService.loginUser(loginDTO);
+            string token = _authenticationService.LoginUser(loginDTO);
 
             return Ok(token);
         }
@@ -34,6 +34,11 @@ namespace Wordle.Controllers {
         [HttpGet("test"), Authorize]
         public string Test() {
             return "test";
+        }
+
+        [HttpGet("currentUser"), Authorize]
+        public UserDTO GetUser() {
+            return _authenticationService.GetUser();
         }
     }
 }
