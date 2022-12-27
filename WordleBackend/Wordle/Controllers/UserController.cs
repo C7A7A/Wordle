@@ -9,11 +9,11 @@ using Wordle.Services;
 
 namespace Wordle.Controllers {
     [Route("api/v1/[controller]")]
-    public class UsersController : Controller {
+    public class UserController : Controller {
 
         private readonly IAuthService _authenticationService;
 
-        public UsersController(IAuthService authenticationService) {
+        public UserController(IAuthService authenticationService) {
             this._authenticationService = authenticationService;
         }
 

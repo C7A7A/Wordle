@@ -8,12 +8,13 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Wordle.Hubs;
+using Wordle.Data.Game;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IWordleService, WordleService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 builder.Services.AddCors(options => {
@@ -24,6 +25,9 @@ builder.Services.AddCors(options => {
             .AllowCredentials();
     });
 });
+builder.Services.AddSingleton<IDictionary<string, GameData>>(options =>
+    new Dictionary<string, GameData>()
+);
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
