@@ -13,7 +13,7 @@ namespace Wordle.Hubs {
         private static List<Player> _players = new();
 
         public WordleHub(IDictionary<string, GameData> gameData, IWordleService wordleService) {
-            _botUser = "game bot";
+            _botUser = "gameBot:";
             _gameData = gameData;
             _wordleService = wordleService;
         }
@@ -43,7 +43,7 @@ namespace Wordle.Hubs {
             _players.Add(player);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
-            await Clients.Group(room).SendAsync("JoinRoom", _botUser, $"{connection.UserName} has joined room {room}");
+            await Clients.Group(room).SendAsync("JoinRoom", _botUser, $"{connection.UserName} joined room {room}");
         }
 
         public async Task CheckAnswer(UserConnection connection, string answer) {
