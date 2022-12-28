@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorPage from './components/ErrorPage'
 import Profile from './components/Profile';
 import Game from './components/Game';
+import Lobby from './components/Lobby';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import RegisterForm from './components/RegisterForm';
+import { Container } from 'react-bootstrap';
 
 const router = createBrowserRouter([
   {
@@ -15,18 +19,28 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
-    path: "/profile/:user",
-    element: <Profile />,
+    path: "/register",
+    element: <RegisterForm />,
+  },
+  {
+    path: "/lobby",
+    element: <Lobby />,
   },
   {
     path: "/game/:room",
     element: <Game />,
   },
+  {
+    path: "/profile/:user",
+    element: <Profile />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Container fluid>
+      <RouterProvider router={router} />
+    </Container>
   </React.StrictMode>
 )
 

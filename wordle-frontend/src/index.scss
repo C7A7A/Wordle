@@ -1,0 +1,60 @@
+@use './styles/colors' as *;
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300&display=swap');
+
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  font-family: 'Dosis', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color:  $white !important;
+  font-size: large !important;
+  background-color: $dark !important;
+}
+
+.container-fluid {
+  height: 100vh;
+}
+
+.btn-standard {
+  background-color: $primary-color !important;
+  padding: 0.8rem 3.5rem !important;
+  font-size: 1.2rem !important;
+  color: $white !important;
+}
+
+.btn-extra-large {
+  padding: 1.2rem 5rem !important;
+  font-size: 1.5rem !important;
+}
+
+.standard-color {
+  color: $primary-color !important;
+}
+
+.white-color {
+  color: $white !important;
+}
+
+.no-text-decoration {
+  text-decoration: none;
+}
+
+.text-extra-large {
+  font-size: 3rem;
+}
+
+.standard-border {
+  border-style: solid;
+  border-color: $primary-color;
+  border-radius: 0.5rem;
+  border-width: 0.11rem;
+}
+
+.standard-border-bottom {
+  border-color: $primary-color;
+  border-style: solid;
+  border-width: 0px 0px 0.1rem 0px;
+}
