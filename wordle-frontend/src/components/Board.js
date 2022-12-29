@@ -1,17 +1,17 @@
 import BoardRow from "./BoardRow";
-import BoardTile from "./BoardTile";
+import { useState } from "react";
 
-const Board = ({name}) => {
+const Board = ({name, disabled}) => {
     return (
-        <div className="d-flex justify-content-center flex-column">
-            <div> Board - {name} </div>
+        <div className="d-flex justify-content-center align-items-center flex-column">
+            <div className='m-2'> {name} </div>
             <div className="d-flex justify-content-center flex-column">
-                <BoardRow rowNumber={1} />
-                <BoardRow rowNumber={2} />
-                <BoardRow rowNumber={3} />
-                <BoardRow rowNumber={4} />
-                <BoardRow rowNumber={5} />
-                <BoardRow rowNumber={6} />
+                <BoardRow rowNumber={0} disabled={disabled} autoFocus={true} />
+                <BoardRow rowNumber={1} disabled={disabled} />
+                <BoardRow rowNumber={2} disabled={disabled} />
+                <BoardRow rowNumber={3} disabled={disabled} />
+                <BoardRow rowNumber={4} disabled={disabled} />
+                <BoardRow rowNumber={5} disabled={disabled} />
             </div>
         </div>
     )

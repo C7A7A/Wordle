@@ -1,8 +1,33 @@
-const BoardTile = ({rowNumber, colNumber}) => {
+import { Form, InputGroup } from "react-bootstrap";
+import { useState } from "react";
+
+const BoardTile = ({bgColor, row, position, disabled, autoFocus=false, moveToNext, moveToPrevious}) => {
+    const [letter, setLetter] = useState('');
+
+    const handleOnChange = (e) => {
+        let text = e.target.value
+        if (text.length > 0) {
+            setLetter(text[0].toUpperCase())
+            moveToNext(position)
+        } else {
+            moveToPrevious(position)
+            setLetter('')
+        }
+    }
+
     return (
-        <div className="p-2">
-            <p> {rowNumber + " " + colNumber} </p>
-        </div>
+        <>
+            <InputGroup className='m-1'>
+                <Form.Control
+                    name={`tile-${row}-${position}`}
+                    disabled={disabled}
+                    autoFocus={autoFocus}
+                    className={`d-flex board-tile standard-bg-color text-extra-large white-color text-center`} 
+                    onChange={handleOnChange} 
+                    value={letter}
+                />
+            </InputGroup>
+        </>
     )
 }
 
