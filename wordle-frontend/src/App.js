@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import AuthenticatePlayer from './components/AuthenicatePlayer';
-
-const wordleURL = "https://localhost:7190/api/v1/Wordle"
-const wordleHubURL = "https://localhost:7190/room";
+import apiRoutes from './components/APIRoutes';
 
 const App = () => {
     const [room, setRoom] = useState();
@@ -13,7 +11,7 @@ const App = () => {
     const [connection, setConnection] = useState();
     
     const generateRoomCode = async () => {
-        await axios.get(wordleURL)
+        await axios.get(apiRoutes.wordle)
         .then((response) => {
             setRoom(response.data)
             console.log(response);
@@ -30,7 +28,7 @@ const App = () => {
     const startGame = async () => {
         try {
             const connection = new HubConnectionBuilder()
-            .withUrl(wordleHubURL)
+            .withUrl(apiRoutes.startConnection)
             .configureLogging(LogLevel.Information)
             .build();
     
@@ -58,7 +56,7 @@ const App = () => {
     const joinRoom = async () => {
         try {
             const connection = new HubConnectionBuilder()
-            .withUrl(wordleHubURL)
+            .withUrl(apiRoutes.startConnection)
             .configureLogging(LogLevel.Information)
             .build();
 
@@ -78,35 +76,6 @@ const App = () => {
     return (
         <div>
             <AuthenticatePlayer />
-          
-            {/* <h1>Lobby</h1>
-            <p> room code: {room} </p>
-
-            <Form 
-                className='lobby'
-                onSubmit = {e => {
-                    e.preventDefault();
-                    startGame();
-                }}
-            >
-                <Form.Group>
-                    <Form.Control placeholder='name' value={userName} onChange={e => setUserName(e.target.value)} />
-                    <Form.Control value={room || ''} onChange={e => setRoom(e.target.value)} />
-                    <Button variant="primary" type="button" onClick={generateRoomCode}> Generate room code </Button>
-                </Form.Group>
-
-                <Button variant="success" type="submit" disabled={!room || !userName}> Start Game </Button>
-            </Form>
-
-            <Form 
-                className='lobbyJoin'
-                onSubmit = {e => {
-                    e.preventDefault();
-                    joinRoom();
-                }}
-            >
-                <Button variant="success" type="submit" disabled={!room || !userName}> Join Game </Button>
-            </Form> */}
         </div>
     )
 }
