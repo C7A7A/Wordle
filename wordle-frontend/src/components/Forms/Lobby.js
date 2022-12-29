@@ -7,8 +7,7 @@ const Lobby = () => {
     const navigate = useNavigate();
 
     const handlePlay = () => {
-        console.log("Play")
-        navigate("/game/testXD")
+        navigate(`/game/${room}`)
     }
 
     return (

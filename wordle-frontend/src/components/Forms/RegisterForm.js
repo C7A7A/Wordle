@@ -52,7 +52,7 @@ const RegisterForm = () => {
 
                 <Form.Group className="mb-2 d-flex flex-row-reverse" controlid="formLogin">
                     <Form.Text className="m-1">
-                        <Link to="/" className='no-text-decoration' > <span className="standard-color"> You have an account? Login! </span> </Link>
+                        <Link to="/" className='no-text-decoration' > <span className="link-standard-color"> You have an account? Login! </span> </Link>
                     </Form.Text>
                 </Form.Group>
 

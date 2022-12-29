@@ -4,13 +4,13 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './components/ErrorPage'
 import Profile from './components/Profile';
-import Game from './components/Game';
-import Lobby from './components/Lobby';
+import Lobby from './components/Forms/Lobby';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import RegisterForm from './components/RegisterForm';
+import RegisterForm from './components/Forms/RegisterForm';
 import { Container } from 'react-bootstrap';
+import ErrorPage from './components/Common/ErrorPage';
+import Game from './components/Board/Game';
 
 const router = createBrowserRouter([
   {

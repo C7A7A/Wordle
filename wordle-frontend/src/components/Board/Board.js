@@ -1,5 +1,4 @@
 import BoardRow from "./BoardRow";
-import { useState } from "react";
 
 const Board = ({name, disabled}) => {
     return (

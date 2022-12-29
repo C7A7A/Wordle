@@ -28,7 +28,7 @@ namespace Wordle.Hubs {
             _players.Add(player);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
-            await Clients.Group(room).SendAsync("StartGame", _botUser, $"room {room} was created, waiting for opponent...");
+            await Clients.Group(room).SendAsync("StartGame", _botUser, $"room {room} was created by {connection.UserName}, waiting for opponent...");
         }
 
         public async Task JoinRoom(UserConnection connection) {
@@ -88,6 +88,10 @@ namespace Wordle.Hubs {
 
         public async Task SendMessage(UserConnection connection, string message) {
             await Clients.Group(connection.Room).SendAsync("ReceiveMessage", connection.UserName, message);
+        }
+
+        public GameData GetGameData(string room) {
+            return _gameData[room];
         }
     }
 }

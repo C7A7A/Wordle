@@ -25,7 +25,7 @@ const LoginForm = ({setEmail, setPassword}) => {
 
                 <Form.Group className="mb-2 d-flex flex-row-reverse" controlid="formRegister">
                     <Form.Text className="m-1">
-                        <Link to="/register" className='no-text-decoration' > <span className="standard-color"> You don't have an account? Register now! </span> </Link>
+                        <Link to="/register" className='no-text-decoration' > <span className="link-standard-color"> You don't have an account? Register now! </span> </Link>
                     </Form.Text>
                 </Form.Group>
             </div>

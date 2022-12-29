@@ -25,6 +25,10 @@ body {
   color: $white !important;
 }
 
+.btn-standard:hover {
+  background-color: $secondary-color !important;
+}
+
 .btn-extra-large {
   padding: 1.2rem 5rem !important;
   font-size: 1.5rem !important;
@@ -32,6 +36,14 @@ body {
 
 .standard-color {
   color: $primary-color !important;
+}
+
+.link-standard-color {
+  color: $primary-color !important;
+}
+
+.link-standard-color:hover {
+  color: $secondary-color !important;
 }
 
 .white-color {
