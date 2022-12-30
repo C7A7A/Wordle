@@ -59,7 +59,11 @@ namespace Wordle.Hubs {
 
             string[] response = _wordleService.checkAnswer(_gameData[room].Wordle, answer);
 
-            await Clients.Group(room).SendAsync("CheckAnswer", connection.UserName, response[0], response[1], response[2], response[3], response[4]);
+            if (response.All(x => x.Equals("CORRECT"))) {
+                await Clients.Group(room).SendAsync("CorrectAnswer", connection.UserName, answer);
+            } else {
+                await Clients.Group(room).SendAsync("CheckAnswer", connection.UserName, response[0], response[1], response[2], response[3], response[4]);
+            }
         }
 
         public async Task StartAgain(UserConnection connection) {

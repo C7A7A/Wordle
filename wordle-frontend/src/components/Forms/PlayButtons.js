@@ -5,6 +5,7 @@ import axios from "axios";
 import apiRoutes from "../Common/APIRoutes";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { useStateMachine } from "little-state-machine";
+import { updateUserName } from "../State/StateMethods";
 
 const PlayButtons = ({guestName, email, password, handleLogin}) => {
     const [connection, setConnection] = useState();
@@ -12,6 +13,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
         console.log("connection is active");
     }
 
+    const {actions} = useStateMachine({ updateUserName });
     const navigate = useNavigate(); 
 
     const generateRoomCode = async () => {
@@ -54,11 +56,11 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
     const isDataValid = async () => {
         if (email && password) {
             const result = await handleLogin();
-            console.log(result);
             return result;
         }
 
         if (guestName) {
+            actions.updateUserName({name: guestName});
             return true;
         }
 

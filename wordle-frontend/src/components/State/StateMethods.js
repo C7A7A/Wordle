@@ -7,3 +7,14 @@ export const updateUser = (state, payload) => {
         },
     };
 }
+
+export const updateUserName = (state, payload) => {
+    return {
+        currentUser: {
+            isLoggedIn: false,
+            email: '', 
+            name: payload.name,
+            token: ''
+        },
+    };
+}

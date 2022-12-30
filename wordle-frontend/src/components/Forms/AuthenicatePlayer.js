@@ -22,25 +22,42 @@ const AuthenticatePlayer = () => {
         return await axios.post(apiRoutes.login, loginData)
             .then(response => {
                 if (response.status === 200) {
-
-                    //TODO: get current user to save his name
-                    actions.updateUser({
-                        isLoggedIn: true,
-                        email: email,
-                        name: '',
-                        token: response.data
-                    })
-
+                    let token = response.data
+                    
+                    getCurrentUser(token).then(data => {
+                        actions.updateUser({
+                            isLoggedIn: true,
+                            email: email,
+                            name: data.name,
+                            token: token
+                        });
+                    });
+                    
                     return true;
                 }
-
                 return false;
             })
             .catch(error => {
                 console.error(error);
                 return false;
             });
-    }  
+    }
+
+    const getCurrentUser = async (token) => {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+        }
+
+        return await axios.get(apiRoutes.currentUser, { headers })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.data;
+                }
+            })
+            .catch(error => {
+                console.error(error)
+            });
+    }
 
     return (
         <div className="d-flex flex-column justify-content-center col-6 mx-auto">

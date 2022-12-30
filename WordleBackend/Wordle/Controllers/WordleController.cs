@@ -24,6 +24,8 @@ public class WordleController : Controller {
 
     [HttpGet("gameData")]
     public GameData GetGameData(string room) {
-        return _wordleHub.GetGameData(room); 
+        GameData gameData = _wordleHub.GetGameData(room);
+        gameData.Wordle = "CHEATER!";
+        return gameData;
     }
 }
