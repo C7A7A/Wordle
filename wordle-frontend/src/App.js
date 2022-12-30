@@ -5,7 +5,8 @@ import { useStateMachine } from 'little-state-machine';
 const App = () => {
     const { state } = useStateMachine();
 
-    console.log(state.currentUser)
+    console.log(state.currentUser);
+    console.log(state.opponent);
 
     return (
         <div>

@@ -43,7 +43,7 @@ namespace Wordle.Hubs {
             _players.Add(player);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
-            await Clients.Group(room).SendAsync("JoinRoom", _botUser, $"{connection.UserName} joined room {room}");
+            await Clients.Group(room).SendAsync("JoinRoom", _botUser, connection.UserName, $"joined room {room} hosted by", _gameData[room].Host.Name);
         }
 
         public async Task CheckAnswer(UserConnection connection, string answer) {
@@ -88,10 +88,6 @@ namespace Wordle.Hubs {
             }
 
             return base.OnDisconnectedAsync(exception);
-        }
-
-        public async Task SendMessage(UserConnection connection, string message) {
-            await Clients.Group(connection.Room).SendAsync("ReceiveMessage", connection.UserName, message);
         }
 
         public GameData GetGameData(string room) {

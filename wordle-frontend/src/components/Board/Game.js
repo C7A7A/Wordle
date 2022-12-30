@@ -10,14 +10,14 @@ const Game = () => {
         <div className="d-flex flex-column">
             <div className="d-flex justify-content-between col-12">
                 <div className="d-flex justify-content-center col-6">
-                    <Board 
-                        name={'Mateusz'}
+                    <Board
+                        player={'current'}
                         disabled={false} 
                     />
                 </div>
                 <div className="d-flex justify-content-center col-6">
                     <Board 
-                        name={'Oponent'} 
+                        player={'opponent'}
                         disabled={true}
                     />
                 </div>

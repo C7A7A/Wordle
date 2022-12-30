@@ -1,34 +1,19 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useStateMachine } from "little-state-machine";
+import { updateOpponentName } from "../State/StateMethods";
+import { joinRoom } from "../Common/WordleHub";
 
 const Lobby = () => {
     const [room, setRoom] = useState();
     const navigate = useNavigate();
+    const {state, actions} = useStateMachine({updateOpponentName});
 
     const handlePlay = () => {
-        navigate(`/game/${room}`)
+        joinRoom(state.currentUser.name, room, state, actions);
+        navigate(`/game/${room}`);
     }
-
-    // const joinRoom = async () => {
-    //     try {
-    //         const connection = new HubConnectionBuilder()
-    //         .withUrl(apiRoutes.startConnection)
-    //         .configureLogging(LogLevel.Information)
-    //         .build();
-
-    //         connection.on("JoinRoom", (userName, message) => {
-    //             console.log(userName, message);
-    //         });
-    
-    //         await connection.start();
-    //         await connection.invoke("JoinRoom", {userName, room});
-    //         setConnection(connection);
-
-    //     } catch(error) {
-    //         console.error(error);
-    //     }
-    // }
 
     return (
         <Form className="d-flex flex-column justify-content-center mt-4">

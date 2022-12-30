@@ -44,6 +44,10 @@ createStore({
     email: '', 
     name: '',
     token: ''
+  },
+
+  opponent: {
+    name: 'Opponent'
   }
 
 });

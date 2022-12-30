@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Wordle.Data;
 using Wordle.Data.UserDTO;
-using Wordle.Models;
 using Wordle.Services;
 
 namespace Wordle.Controllers {
@@ -41,8 +37,14 @@ namespace Wordle.Controllers {
         }
 
         [HttpGet("currentUser"), Authorize]
-        public UserDTO GetUser() {
-            return _authenticationService.GetUser();
+        public ActionResult<UserDTO> GetUser() {
+            UserDTO user = _authenticationService.GetUser();
+
+            if (user.Email.IsNullOrEmpty()) {
+                return BadRequest(string.Empty);
+            }
+
+            return Ok(user);
         }
     }
 }
