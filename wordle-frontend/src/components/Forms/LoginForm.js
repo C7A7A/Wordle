@@ -1,7 +1,8 @@
+import { useStateMachine } from "little-state-machine";
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const LoginForm = ({setEmail, setPassword}) => {
+const LoginForm = ({email, setEmail, setPassword}) => {
     return (
         <Form className="d-flex flex-column justify-content-center">
             <div className="col-12 mx-auto p-2">
@@ -15,7 +16,7 @@ const LoginForm = ({setEmail, setPassword}) => {
 
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={e => setEmail(e.target.value)} />
+                    <Form.Control value={email} type="email" placeholder="Enter email" onChange={e => setEmail(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicPassword">

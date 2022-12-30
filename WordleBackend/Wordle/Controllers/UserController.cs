@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Wordle.Data;
 using Wordle.Data.UserDTO;
 using Wordle.Models;
@@ -17,23 +18,26 @@ namespace Wordle.Controllers {
             this._authenticationService = authenticationService;
         }
 
-        [HttpPost]
-        public ActionResult<UserDTO> Register(RegisterDTO registerDTO) {
+        [HttpPost("register")]
+        public ActionResult<UserDTO> Register([FromBody] RegisterDTO registerDTO) {
             UserDTO user = _authenticationService.RegisterUser(registerDTO);
+
+            if (user.Email.IsNullOrEmpty()) {
+                return BadRequest(string.Empty);
+            }
 
             return Ok(user);
         }
 
-        [HttpGet]
-        public ActionResult<string> Login(LoginDTO loginDTO) {
+        [HttpPost("login")]
+        public ActionResult<string> Login([FromBody] LoginDTO loginDTO) {
             string token = _authenticationService.LoginUser(loginDTO);
 
-            return Ok(token);
-        }
+            if (token.IsNullOrEmpty()) {
+                return BadRequest(string.Empty);
+            }
 
-        [HttpGet("test"), Authorize]
-        public string Test() {
-            return "test";
+            return Ok(token);
         }
 
         [HttpGet("currentUser"), Authorize]

@@ -11,6 +11,7 @@ import RegisterForm from './components/Forms/RegisterForm';
 import { Container } from 'react-bootstrap';
 import ErrorPage from './components/Common/ErrorPage';
 import Game from './components/Board/Game';
+import { createStore, StateMachineProvider } from 'little-state-machine';
 
 const router = createBrowserRouter([
   {
@@ -36,11 +37,24 @@ const router = createBrowserRouter([
   },
 ]);
 
+createStore({
+
+  currentUser: {
+    isLoggedIn: false,
+    email: '', 
+    name: '',
+    token: ''
+  }
+
+});
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Container fluid>
-      <RouterProvider router={router} />
-    </Container>
+    <StateMachineProvider>
+      <Container fluid>
+        <RouterProvider router={router} />
+      </Container>
+    </StateMachineProvider>
   </React.StrictMode>
 )
 

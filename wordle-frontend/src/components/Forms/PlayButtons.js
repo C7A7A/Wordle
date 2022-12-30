@@ -4,10 +4,13 @@ import { useState } from "react";
 import axios from "axios";
 import apiRoutes from "../Common/APIRoutes";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { useStateMachine } from "little-state-machine";
 
-const PlayButtons = ({guestName, email, password}) => {
+const PlayButtons = ({guestName, email, password, handleLogin}) => {
     const [connection, setConnection] = useState();
-    console.log('connection: ', connection);
+    if (connection) {
+        console.log("connection is active");
+    }
 
     const navigate = useNavigate(); 
 
@@ -19,26 +22,6 @@ const PlayButtons = ({guestName, email, password}) => {
             console.error(error);
         }
     }
-
-    // const joinRoom = async () => {
-    //     try {
-    //         const connection = new HubConnectionBuilder()
-    //         .withUrl(apiRoutes.startConnection)
-    //         .configureLogging(LogLevel.Information)
-    //         .build();
-
-    //         connection.on("JoinRoom", (userName, message) => {
-    //             console.log(userName, message);
-    //         });
-    
-    //         await connection.start();
-    //         await connection.invoke("JoinRoom", {userName, room});
-    //         setConnection(connection);
-
-    //     } catch(error) {
-    //         console.error(error);
-    //     }
-    // }
 
     const startConnection = async (userName, room) => {
         try {
@@ -68,11 +51,34 @@ const PlayButtons = ({guestName, email, password}) => {
         }
     }
 
-    const handleJoinRoom = () => {
+    const isDataValid = async () => {
+        if (email && password) {
+            const result = await handleLogin();
+            console.log(result);
+            return result;
+        }
+
+        if (guestName) {
+            return true;
+        }
+
+        return false;
+    }
+
+    const handleJoinRoom = async () => {
+        const dataValid = await isDataValid();
+        if (!dataValid) {
+            return;
+        }
         navigate('/lobby');
     }
 
-    const handlePlay = () => {
+    const handlePlay = async () => {
+        const dataValid = await isDataValid();
+        if (!dataValid) {
+            return;
+        }
+
         generateRoomCode()
             .then(data => {
                 const room = data;

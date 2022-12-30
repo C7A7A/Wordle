@@ -1,16 +1,14 @@
 ﻿namespace Wordle.Data.UserDTO {
     public class UserDTO {
+        public string Email { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+
         public UserDTO() {
         }
 
-        public UserDTO(string email, string firstName, string lastName) {
+        public UserDTO(string email, string name) {
             Email = email;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
         }
-
-        public string Email { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
     }
 }

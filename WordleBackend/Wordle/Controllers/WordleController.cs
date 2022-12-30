@@ -17,11 +17,6 @@ public class WordleController : Controller {
         _wordleHub = wordleHub;
     }
 
-    [HttpGet("words")]
-    public string[] GetWords() {
-        return WordsUtils.words;
-    }
-
     [HttpGet]
     public string StartWordle() {
         return _wordleService.getRoom();

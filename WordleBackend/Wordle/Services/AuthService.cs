@@ -28,12 +28,12 @@ namespace Wordle.Services {
 
             CreatePasswordHash(password, out string passwordHash, out string passwordSalt);
 
-            User user = new(registerDTO.Email, passwordHash, passwordSalt, registerDTO.FirstName, registerDTO.LastName);
+            User user = new(registerDTO.Email, passwordHash, passwordSalt, registerDTO.Name);
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return new UserDTO(user.Email, user.FirstName, user.LastName);
+            return new UserDTO(user.Email, user.Name);
         }
 
         public string LoginUser(LoginDTO loginDTO) {
@@ -66,7 +66,7 @@ namespace Wordle.Services {
         }
 
         private static UserDTO MaptoDTO(User user) {
-            return new UserDTO(user.Email, user.FirstName, user.LastName);
+            return new UserDTO(user.Email, user.Name);
         }
 
         private string CreateToken(User user) {

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import apiRoutes from "../Common/APIRoutes";
 
 const RegisterForm = () => {
     const [name, setName] = useState();
@@ -14,9 +16,53 @@ const RegisterForm = () => {
         return !name || !email || !password || !confirmPassword
     }
 
+    const validateRegister = () => {
+        if (password.length < 6) {
+            console.log('password is too short (min 6)');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            console.log('confirm password do not match password!');
+            return false;
+        }
+
+        if (!name) {
+            console.log('name is empty');
+            return false;
+        }
+
+        if (!email) {
+            console.log('email is empty');
+            return false;
+        }
+
+        return true;
+    } 
+
     const handleSubmit = () => {
-        console.log("Register User");
-        navigate("/");
+        if (!validateRegister()) {
+            return
+        }
+
+        const registerData = {
+            "email": email,
+            "password": password,
+            "passwordConfirmation": confirmPassword,
+            "name": name
+          }
+
+        axios.post(apiRoutes.register, registerData)
+            .then(response => {
+                if (response.status === 200) {
+                    navigate("/");
+                }
+
+                return;
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     return (

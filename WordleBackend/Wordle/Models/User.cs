@@ -13,16 +13,13 @@ namespace Wordle.Models {
         [Required]
         public string PasswordSalt { get; set; } = string.Empty;
         [Required]
-        public string FirstName { get; set; } = string.Empty;
-        [Required]
-        public string LastName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public User(string email, string password, string passwordSalt, string firstName, string lastName) {
+        public User(string email, string password, string passwordSalt, string name) {
             Email = email;
             Password = password;
             PasswordSalt = passwordSalt;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
         }
 
         public User() {

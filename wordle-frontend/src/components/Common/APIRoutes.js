@@ -8,10 +8,12 @@ const rootRoutes = {
 const apiRoutes = {
     startConnection: mainURL + 'room',
 
-    user: rootRoutes.user,
+    register: rootRoutes.user + '/register',
+    login: rootRoutes.user + '/login',
     currentUser: rootRoutes.user + '/currentUser',
 
     wordle: rootRoutes.wordle,
+    wordleGameData: rootRoutes.wordle + '/gameData',
 }
 
 export default apiRoutes;
