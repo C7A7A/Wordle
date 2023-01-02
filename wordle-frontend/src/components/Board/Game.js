@@ -1,39 +1,34 @@
-import Board from "./Board"
-import { useState } from "react";
-import GameOverModal from "./GameOverModal";
-import { Button } from "react-bootstrap";
+import { useStateMachine } from "little-state-machine";
+import GameStatus from "./GameStatus";
+import { useEffect, useState } from "react";
+import { updateUserName, updateUserConnection, updateUserRoom, updateOpponentName, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
+import { generateGuestName } from "../Common/InitializeState";
+import { useLocation } from "react-router-dom";
+import { joinRoom } from "../Common/WordleHub";
 
 const Game = () => {
-    const [modalShow, setModalShow] = useState(false);
+    const {state, actions} = useStateMachine({updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse});
+    const [roomCode, setRoomCode] = useState('');
+    const location = useLocation();
 
-    return (
-        <div className="d-flex flex-column">
-            <div className="d-flex justify-content-between col-12">
-                <div className="d-flex justify-content-center col-6">
-                    <Board
-                        player={'current'}
-                        disabled={false} 
-                    />
-                </div>
-                <div className="d-flex justify-content-center col-6">
-                    <Board 
-                        player={'opponent'}
-                        disabled={true}
-                    />
-                </div>
-            </div>
+    useEffect(() => {
+        const room = location.pathname.split('/')[2]
+        setRoomCode(room)
 
-            <Button variant="standard" type="button" onClick={() => setModalShow(true)}>
-                Modal
-            </Button>
-
-            <GameOverModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                status={'won'}
-                answer={'WORDLE'}
-            />
-        </div>
+        if (!state.currentUser.name && state.opponent.name === "Opponent") {
+            console.log("GENERATING")
+            const guestName = generateGuestName(5)
+            actions.updateUserName({name: guestName});
+            
+            console.log("JOINING ROOM")
+            console.log(guestName, room);
+            joinRoom(guestName, room, actions);
+        }   
+    
+    }, [location.pathname, roomCode, state.currentUser.name, state.opponent.name])
+    
+    return(
+        <GameStatus currentPlayer={state.currentUser.name} opponent={state.opponent.name} room={roomCode} />
     )
 }
 

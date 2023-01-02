@@ -21,7 +21,13 @@ namespace Wordle.Hubs {
         public async Task StartGame(UserConnection connection) {
             string room = connection.Room;
 
+            // if given room already exist
+            if (_gameData.ContainsKey(room)) {
+                return;
+
+            }
             string wordle = WordsUtils.GetRandomWord();
+            Console.WriteLine(wordle);
 
             Player player = new(connection.UserName, Context.ConnectionId, room);
             _gameData[room] = new GameData(room, wordle, player);
@@ -34,7 +40,13 @@ namespace Wordle.Hubs {
         public async Task JoinRoom(UserConnection connection) {
             string room = connection.Room;
 
+            // if given room does not exist
             if (!_gameData.ContainsKey(room)) {
+                return;
+            }
+
+            // if there are 2 players in room
+            if (_gameData[room].Host != null && _gameData[room].Guest != null) {
                 return;
             }
 
@@ -49,10 +61,17 @@ namespace Wordle.Hubs {
         public async Task CheckAnswer(UserConnection connection, string answer) {
             string room = connection.Room;
 
+            // if answer length is not correct
             if (answer.Length != 5) {
                 return;
             }
 
+            // if there are no 2 players in room
+            if (_gameData[room].Host == null || _gameData[room].Guest == null) {
+                return;
+            }
+
+            // if given room does not exist
             if (!_gameData.ContainsKey(room)) {
                 return;
             }
@@ -60,15 +79,16 @@ namespace Wordle.Hubs {
             string[] response = _wordleService.checkAnswer(_gameData[room].Wordle, answer);
 
             if (response.All(x => x.Equals("CORRECT"))) {
-                await Clients.Group(room).SendAsync("CorrectAnswer", connection.UserName, answer);
+                await Clients.Group(room).SendAsync("CorrectAnswer", connection.UserName, response, answer);
             } else {
-                await Clients.Group(room).SendAsync("CheckAnswer", connection.UserName, response[0], response[1], response[2], response[3], response[4]);
+                await Clients.Group(room).SendAsync("CheckAnswer", connection.UserName, response);
             }
         }
 
         public async Task StartAgain(UserConnection connection) {
             string room = connection.Room;
 
+            // if given room does not exist
             if (!_gameData.ContainsKey(room)) {
                 return;
             }

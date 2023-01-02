@@ -8,6 +8,7 @@ namespace Wordle.Services {
 
         public string[] checkAnswer(string wordle, string answer) {
             string[] response = new string[WORDLE_SIZE];
+            wordle = wordle.ToUpper();
 
             for (int i = 0; i < WORDLE_SIZE; i++) {
                 char letter = answer[i];

@@ -3,12 +3,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiRoutes from "../Common/APIRoutes";
 import { useStateMachine } from "little-state-machine";
-import { updateUserName, updateOpponentName } from "../State/StateMethods";
+import { updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
 import { startConnection } from "../Common/WordleHub";
+import { useState, useEffect } from "react";
 
 const PlayButtons = ({guestName, email, password, handleLogin}) => {
-    const {state, actions} = useStateMachine({ updateUserName, updateOpponentName });
+    const {state, actions} = useStateMachine({ updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse });
     const navigate = useNavigate(); 
+    const [room, setRoom] = useState('');
+
+    useEffect(() => {
+        if (room) {
+            startConnection(state.currentUser.name, room, actions);
+            navigate(`/game/${room}`);
+        }
+       
+    }, [room, actions, state.currentUser.name])
 
     const generateRoomCode = async () => {
         try {
@@ -21,8 +31,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
 
     const isDataValid = async () => {
         if (email && password) {
-            const result = await handleLogin();
-            return result;
+            return await handleLogin();
         }
 
         if (guestName) {
@@ -47,11 +56,9 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
             return;
         }
 
-        generateRoomCode()
+        await generateRoomCode()
             .then(roomCode => {
-                const userName = guestName ? guestName : email
-                startConnection(userName, roomCode, state, actions)
-                navigate(`/game/${roomCode}`);
+                setRoom(roomCode);
             })
             .catch(error => console.log(error))
     }

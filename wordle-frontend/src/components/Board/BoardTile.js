@@ -22,7 +22,7 @@ const BoardTile = ({bgColor, row, position, disabled, autoFocus=false, moveToNex
                     name={`tile-${row}-${position}`}
                     disabled={disabled}
                     autoFocus={autoFocus}
-                    className={`d-flex board-tile standard-bg-color text-extra-large white-color text-center`} 
+                    className={`d-flex board-tile ${bgColor} text-extra-large white-color text-center`} 
                     onChange={handleOnChange} 
                     value={letter}
                 />

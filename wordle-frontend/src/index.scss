@@ -58,6 +58,10 @@ body {
   background-color: $primary-color !important;
 }
 
+.hover-bg-color {
+  background-color: $secondary-color !important;
+}
+
 .green-bg-color {
   background-color: $green !important;
 }
@@ -90,4 +94,13 @@ body {
 .board-tile {
   width: 6rem !important;
   height: 6rem !important;
+}
+
+.waiting-opponent-spinner {
+  width: 5rem !important;
+  height: 5rem !important;
+}
+
+.top-5 {
+  top: 5% !important;
 }

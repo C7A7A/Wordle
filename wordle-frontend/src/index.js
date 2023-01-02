@@ -43,8 +43,13 @@ createStore({
     isLoggedIn: false,
     email: '', 
     name: '',
-    token: ''
+    room: '',
+    token: '',
+    connection: ''
   },
+
+  answerResponse: [],
+  opponentAnswerResponse: [],
 
   opponent: {
     name: 'Opponent'
@@ -53,13 +58,11 @@ createStore({
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <StateMachineProvider>
-      <Container fluid>
-        <RouterProvider router={router} />
-      </Container>
-    </StateMachineProvider>
-  </React.StrictMode>
+  <StateMachineProvider>
+    <Container fluid>
+      <RouterProvider router={router} />
+    </Container>
+  </StateMachineProvider>
 )
 
 
