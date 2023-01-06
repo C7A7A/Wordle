@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
-import { updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
+import { switchRematch, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse, updateUserStatus, setAnswerWordle } from "../State/StateMethods";
 import { joinRoom } from "../Common/WordleHub";
 
 const Lobby = () => {
     const [room, setRoom] = useState();
     const navigate = useNavigate();
-    const {state, actions} = useStateMachine({updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse});
+    const {state, actions} = useStateMachine({switchRematch, updateUserStatus, setAnswerWordle, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse});
 
     const handlePlay = () => {
         joinRoom(state.currentUser.name, room, actions);

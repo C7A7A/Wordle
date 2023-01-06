@@ -2,11 +2,11 @@ import { useStateMachine } from "little-state-machine";
 import { useState, useEffect } from "react";
 import Board from "./Board";
 import { initWordleArray } from "../Common/InitializeState";
-import { Button } from "react-bootstrap";
 import GameOverModal from "./GameOverModal";
+import { switchRematch } from "../State/StateMethods";
 
 const Boards = () => {
-    const { state } = useStateMachine();
+    const { state, actions } = useStateMachine({switchRematch});
     const [modalShow, setModalShow] = useState(false);
     const [answerStatuses, setAnswerStatuses] = useState(() => initWordleArray());
     const [attemptNumber, setAttempNumber] = useState(0);
@@ -25,7 +25,7 @@ const Boards = () => {
             setAttempNumber((x) => (x + 1) % 6);
         }
     }, [state.answerResponse])
-
+    
     useEffect(() => {
         if (state.opponentAnswerResponse.length > 0) {
             var letterStatuses = state.opponentAnswerResponse;
@@ -38,6 +38,24 @@ const Boards = () => {
             setOpponentAttempNumber((x) => (x + 1) % 6);
         }
     }, [state.opponentAnswerResponse])
+
+    useEffect(() => {
+        if (state.currentUser.status !== "draw") {
+            setModalShow(true);
+        }
+    }, [state.currentUser.status])
+
+    useEffect(() => {
+        if (state.rematch) {
+            console.log('empty boards data');
+            setAnswerStatuses(initWordleArray());
+            setAttempNumber(0);
+            setOpponentAnswerResponse(initWordleArray());
+            setOpponentAttempNumber(0);
+            actions.switchRematch();
+            setModalShow(false);
+        }
+    }, [state.rematch, actions])
 
     const getTileStyles = (letterStatuses) => {
         var tileStyles = [];
@@ -63,27 +81,21 @@ const Boards = () => {
                     <Board
                         answerStatuses={answerStatuses}
                         player={state.currentUser.name}
-                        disabled={false} 
+                        attemptNumber={attemptNumber}
                     />
                 </div>
                 <div className="d-flex justify-content-center col-6">
                     <Board 
                         answerStatuses={opponentAnswerStatuses}
                         player={state.opponent.name}
-                        disabled={true}
+                        attemptNumber={attemptNumber}
                     />
                 </div>
             </div>
 
-            <Button variant="standard" type="button" onClick={() => setModalShow(true)}>
-                Modal
-            </Button>
-
             <GameOverModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-                status={'won'}
-                answer={'WORDLE'}
             />
         </div>
     )

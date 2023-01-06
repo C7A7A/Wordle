@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Azure;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections;
 using Wordle.Common;
 using Wordle.Data.Connections;
 using Wordle.Data.Game;
 using Wordle.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Wordle.Hubs {
     public class WordleHub : Hub {
@@ -34,7 +36,7 @@ namespace Wordle.Hubs {
             _players.Add(player);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
-            await Clients.Group(room).SendAsync("StartGame", _botUser, $"room {room} was created by {connection.UserName}, waiting for opponent...");
+            await SendResponse("StartGame", connection);
         }
 
         public async Task JoinRoom(UserConnection connection) {
@@ -55,37 +57,42 @@ namespace Wordle.Hubs {
             _players.Add(player);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
-            await Clients.Group(room).SendAsync("JoinRoom", _botUser, connection.UserName, $"joined room {room} hosted by", _gameData[room].Host.Name);
+            await SendResponse("JoinRoom", connection);
         }
 
         public async Task CheckAnswer(UserConnection connection, string answer) {
             string room = connection.Room;
 
-            // if answer length is not correct
-            if (answer.Length != 5) {
-                return;
-            }
-
-            // if there are no 2 players in room
-            if (_gameData[room].Host == null || _gameData[room].Guest == null) {
-                return;
-            }
-
-            // if given room does not exist
-            if (!_gameData.ContainsKey(room)) {
+            if (!ValidateCheckAnswer(room, answer)) {
                 return;
             }
 
             string[] response = _wordleService.checkAnswer(_gameData[room].Wordle, answer);
 
             if (response.All(x => x.Equals("CORRECT"))) {
-                await Clients.Group(room).SendAsync("CorrectAnswer", connection.UserName, response, answer);
+                await SendResponse("CorrectAnswer", connection, response);
             } else {
-                await Clients.Group(room).SendAsync("CheckAnswer", connection.UserName, response);
+                await SendResponse("CheckAnswer", connection, response);
             }
         }
 
-        public async Task StartAgain(UserConnection connection) {
+        public async Task LastAnswer(UserConnection connection, string answer) {
+            string room = connection.Room;
+
+            if (!ValidateCheckAnswer(room, answer)) {
+                return;
+            }
+
+            string[] response = _wordleService.checkAnswer(_gameData[room].Wordle, answer);
+
+            if (response.All(x => x.Equals("CORRECT"))) {
+                await SendResponse("CorrectAnswer", connection, response);
+            } else {
+                await SendResponse("LastAnswer", connection, response);
+            }
+        }
+
+        public async Task PlayAgain(UserConnection connection) {
             string room = connection.Room;
 
             // if given room does not exist
@@ -93,9 +100,12 @@ namespace Wordle.Hubs {
                 return;
             }
 
-            _gameData[room].Wordle = WordsUtils.GetRandomWord();
+            string wordle = WordsUtils.GetRandomWord();
+            Console.WriteLine(wordle);
+            
+            _gameData[room].Wordle = wordle;
 
-            await Clients.Group(room).SendAsync("StartAgain", _botUser, $"New word was generated in room{room}");
+            await SendResponse("PlayAgain", connection);
         }
 
         public override async Task<Task> OnDisconnectedAsync(Exception? exception) {
@@ -104,7 +114,7 @@ namespace Wordle.Hubs {
                 _players.Remove(player);
                 GameData gameData = _gameData[player.Room];
 
-                await Clients.Group(gameData.Room).SendAsync("GameOver", _botUser, $"{player.Name} left the game");
+                await Clients.Group(gameData.Room).SendAsync("GameOver", _botUser, player.Name,  " left the game", gameData.Wordle);
             }
 
             return base.OnDisconnectedAsync(exception);
@@ -113,5 +123,86 @@ namespace Wordle.Hubs {
         public GameData GetGameData(string room) {
             return _gameData[room];
         }
+
+        private bool ValidateCheckAnswer(string room, string answer) {
+            if (room == null) { 
+                return false; 
+            }
+
+            // if answer length is not correct
+            if (answer.Length != 5) {
+                return false;
+            }
+
+            // if there are no 2 players in room
+            if (_gameData[room].Host == null || _gameData[room].Guest == null) {
+                return false;
+            }
+
+            // if given room does not exist
+            if (!_gameData.ContainsKey(room)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task SendResponse(string responseType, UserConnection connection, string[]? responseMessage = null) {
+            switch (responseType) {
+                case "StartGame":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "StartGame",
+                        _botUser,
+                        $"room {connection.Room} was created by {connection.UserName}, waiting for opponent..."
+                    );
+                    break;
+
+                case "JoinRoom":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "JoinRoom",
+                        _botUser,
+                        connection.UserName, $"joined room {connection.Room} hosted by", _gameData[connection.Room].Host.Name
+                    );
+                    break;
+
+                case "CorrectAnswer":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "CorrectAnswer",
+                        connection.UserName,
+                        responseMessage,
+                        _gameData[connection.Room].Wordle
+                    );
+                    break;
+
+                case "CheckAnswer":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "CheckAnswer",
+                        connection.UserName,
+                        responseMessage
+                    );
+                    break;
+
+                case "PlayAgain":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "PlayAgain",
+                        _botUser, 
+                        $"New word was generated in room {connection.Room}"
+                    );
+                    break;
+
+                case "LastAnswer":
+                    await Clients.Group(connection.Room).SendAsync(
+                        "LastAnswer",
+                        connection.UserName,
+                        responseMessage,
+                        _gameData[connection.Room].Wordle
+                    );
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
     }
 }

@@ -50,6 +50,24 @@ export const checkAnswer = async (connection, userName, room, answer) => {
     }
 }
 
+export const lastAnswer = async (connection, userName, room, answer) => {
+    console.log(connection, userName, room, answer);
+    try {
+        await connection.invoke("LastAnswer", {userName, room}, answer);
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const playAgain = async (connection, userName, room) => {
+    console.log("PLAY_AGAIN");
+    try {
+        await connection.invoke("PlayAgain", {userName, room});
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 const handleHubMethods = (connection, currentUserName, actions) => {
     console.log('handleHubMethods:', actions)
 
@@ -76,10 +94,28 @@ const handleHubMethods = (connection, currentUserName, actions) => {
     connection.on("CorrectAnswer", (userName, response, answer) => {
         console.log(userName, response, answer);
         setAnswerResponse(currentUserName, userName, actions, response);
+        actions.setAnswerWordle({wordle: answer});
+        updateUserStatus(currentUserName, userName, actions);
     });
 
-    connection.on("GameOver", (userName, message) => {
-        console.log(userName, message)
+    connection.on("LastAnswer", (userName, response, answer) => {
+        console.log(userName, response, answer);
+        setAnswerResponse(currentUserName, userName, actions, response);
+        actions.setAnswerWordle({wordle: answer});
+        updateUserStatusOnLastAnswer(currentUserName, userName, actions);
+    });
+
+    connection.on("PlayAgain", (_, message) => {
+        console.log(message);
+        actions.switchRematch();
+    });
+
+    connection.on("GameOver", (_, userName, message, answer) => {
+        console.log(userName, message, answer);
+        actions.setAnswerWordle({wordle: answer});
+        updateUserStatusOnLastAnswer(currentUserName, userName, actions);
+        
+        actions.updateOpponentName({name: "LEFT THE GAME"});
     });
 }
 
@@ -88,5 +124,21 @@ const setAnswerResponse = (currentUserName, userName, actions, response) => {
         actions.setAnswerResponse({response: response});
     } else {
         actions.setOpponentAnswerResponse({response: response});
+    }
+}
+
+const updateUserStatus = (currentUserName, userName, actions) => {
+    if (currentUserName === userName) {
+        actions.updateUserStatus({status: "Won"});
+    } else {
+        actions.updateUserStatus({status: "Lost"});
+    }
+}
+
+const updateUserStatusOnLastAnswer = (currentUserName, userName, actions) => {
+    if (currentUserName === userName) {
+        actions.updateUserStatus({status: "Lost"});
+    } else {
+        actions.updateUserStatus({status: "Won"});
     }
 }

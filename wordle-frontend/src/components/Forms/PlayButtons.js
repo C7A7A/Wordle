@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiRoutes from "../Common/APIRoutes";
 import { useStateMachine } from "little-state-machine";
-import { updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
+import { switchRematch, updateUserStatus, setAnswerWordle, updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
 import { startConnection } from "../Common/WordleHub";
 import { useState, useEffect } from "react";
 
 const PlayButtons = ({guestName, email, password, handleLogin}) => {
-    const {state, actions} = useStateMachine({ updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse });
+    const {state, actions} = useStateMachine({ switchRematch, updateUserStatus, setAnswerWordle, updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse });
     const navigate = useNavigate(); 
     const [room, setRoom] = useState('');
 

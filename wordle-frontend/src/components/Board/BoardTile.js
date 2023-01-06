@@ -1,8 +1,19 @@
 import { Form, InputGroup } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useStateMachine } from "little-state-machine";
 
 const BoardTile = ({bgColor, row, position, disabled, autoFocus=false, moveToNext, moveToPrevious}) => {
+    const {state} = useStateMachine();
     const [letter, setLetter] = useState('');
+
+    useEffect(() => {
+      if (state.rematch) {
+        console.log('empty tile')
+        setLetter('');
+      }
+    
+    }, [state.rematch])
+    
 
     const handleOnChange = (e) => {
         let text = e.target.value

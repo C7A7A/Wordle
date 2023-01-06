@@ -38,6 +38,17 @@ export const updateUserRoom = (state, payload) => {
     };
 }
 
+export const updateUserStatus = (state, payload) => {
+    return {
+        ...state,
+        currentUser: {
+            ...state.currentUser,
+            status: payload.status,
+        },
+    };
+}
+
+
 export const updateOpponentName = (state, payload) => {
     return {
         ...state,
@@ -61,3 +72,30 @@ export const setOpponentAnswerResponse = (state, payload) => {
     };
 }
 
+export const setAnswerWordle = (state, payload) => {
+    return {
+        ...state,
+        wordleAnswer: payload.wordle
+    };
+}
+
+export const clearData = (state) => {
+    return {
+        ...state,
+        currentUser: {
+            ...state.currentUser,
+            status: 'draw'
+          },
+        
+        answerResponse: [],
+        opponentAnswerResponse: [],
+        wordleAnswer: 'undefined',
+    };
+}
+
+export const switchRematch = (state) => {
+    return {
+        ...state, 
+        rematch: !state.rematch
+    };
+}

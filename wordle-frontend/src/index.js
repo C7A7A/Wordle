@@ -45,16 +45,19 @@ createStore({
     name: '',
     room: '',
     token: '',
-    connection: ''
+    connection: '',
+    status: 'draw'
+  },
+
+  opponent: {
+    name: 'Opponent'
   },
 
   answerResponse: [],
   opponentAnswerResponse: [],
+  wordleAnswer: 'undefined',
 
-  opponent: {
-    name: 'Opponent'
-  }
-
+  rematch: false
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -1,13 +1,13 @@
 import { useStateMachine } from "little-state-machine";
 import GameStatus from "./GameStatus";
 import { useEffect, useState } from "react";
-import { updateUserName, updateUserConnection, updateUserRoom, updateOpponentName, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
+import { switchRematch, updateUserStatus, setAnswerWordle, updateUserName, updateUserConnection, updateUserRoom, updateOpponentName, setAnswerResponse, setOpponentAnswerResponse } from "../State/StateMethods";
 import { generateGuestName } from "../Common/InitializeState";
 import { useLocation } from "react-router-dom";
 import { joinRoom } from "../Common/WordleHub";
 
 const Game = () => {
-    const {state, actions} = useStateMachine({updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse});
+    const {state, actions} = useStateMachine({switchRematch, updateUserStatus, setAnswerWordle, updateUserName, updateOpponentName, updateUserConnection, updateUserRoom, setAnswerResponse, setOpponentAnswerResponse});
     const [roomCode, setRoomCode] = useState('');
     const location = useLocation();
 
