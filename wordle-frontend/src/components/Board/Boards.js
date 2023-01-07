@@ -75,16 +75,16 @@ const Boards = () => {
     }
 
     return (
-        <div className="d-flex flex-column">
-            <div className="d-flex justify-content-between col-12">
-                <div className="d-flex justify-content-center col-6">
+        <div className="d-flex  flex-column">
+            <div className="d-flex boards-wrapper justify-content-between col-12">
+                <div className="d-flex justify-content-center col-lg-12 col-xl-6">
                     <Board
                         answerStatuses={answerStatuses}
                         player={state.currentUser.name}
                         attemptNumber={attemptNumber}
                     />
                 </div>
-                <div className="d-flex justify-content-center col-6">
+                <div className="d-flex justify-content-center col-lg-12 col-xl-6">
                     <Board 
                         answerStatuses={opponentAnswerStatuses}
                         player={state.opponent.name}

@@ -13,7 +13,8 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
     const [room, setRoom] = useState('');
 
     useEffect(() => {
-        if (room) {
+        if (room && state.currentUser.name) {
+            console.log("currentuser:", state.currentUser)
             startConnection(state.currentUser.name, room, actions);
             navigate(`/game/${room}`);
         }
@@ -56,7 +57,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
             return;
         }
 
-        await generateRoomCode()
+        generateRoomCode()
             .then(roomCode => {
                 setRoom(roomCode);
             })
@@ -71,7 +72,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
                 </Button>
             </div>
             <div className="m-1">
-                <Button variant="standard" type="button" disabled={!guestName && (!email || !password)} onClick={handlePlay}>
+                <Button className="w-100 h-100" variant="standard" type="button" disabled={!guestName && (!email || !password)} onClick={handlePlay}>
                     Play
                 </Button>
             </div>

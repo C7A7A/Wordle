@@ -104,3 +104,51 @@ body {
 .top-5 {
   top: 5% !important;
 }
+
+
+@media only screen and (max-width: 1100px) {
+  .board-tile {
+    width: 4rem !important;
+    height: 4rem !important;
+  }
+
+  .boards-wrapper {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .text-extra-large {
+    font-size: 2rem !important;
+  }
+
+  .btn-standard {
+    background-color: $primary-color !important;
+    padding: 0.2rem 1.2rem !important;
+    font-size: 1.2rem !important;
+    color: $white !important;
+  }
+
+  .board-tile {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .text-extra-large {
+    font-size: 0.7rem !important;
+  }
+
+  .btn-standard {
+    background-color: $primary-color !important;
+    padding: 0.2rem 1.2rem !important;
+    font-size: 1.2rem !important;
+    color: $white !important;
+  }
+
+  .board-tile {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+}

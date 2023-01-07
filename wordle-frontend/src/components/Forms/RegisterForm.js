@@ -1,55 +1,21 @@
-import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiRoutes from "../Common/APIRoutes";
+import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [confirmPassword, setconfirmPassword] = useState();
+    const { register, handleSubmit, watch, formState: { errors }} = useForm();
     const navigate = useNavigate();
 
-    const allowRegister = () => {
-        return !name || !email || !password || !confirmPassword
-    }
-
-    const validateRegister = () => {
-        if (password.length < 6) {
-            console.log('password is too short (min 6)');
-            return false;
-        }
-
-        if (password !== confirmPassword) {
-            console.log('confirm password do not match password!');
-            return false;
-        }
-
-        if (!name) {
-            console.log('name is empty');
-            return false;
-        }
-
-        if (!email) {
-            console.log('email is empty');
-            return false;
-        }
-
-        return true;
-    } 
-
-    const handleSubmit = () => {
-        if (!validateRegister()) {
-            return
-        }
+    const onSubmit = (data) => {
 
         const registerData = {
-            "email": email,
-            "password": password,
-            "passwordConfirmation": confirmPassword,
-            "name": name
+            "email": data.email,
+            "password": data.password,
+            "passwordConfirmation": data.confirmPassword,
+            "name": data.name
           }
 
         axios.post(apiRoutes.register, registerData)
@@ -66,7 +32,10 @@ const RegisterForm = () => {
     }
 
     return (
-        <Form className="d-flex flex-column justify-content-center mt-5">
+        <Form 
+            className="d-flex flex-column justify-content-center"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="col-6 mx-auto p-2">
                 <Form.Group className="d-flex justify-content-center" controlid="formTitle">
                     <div className="d-flex justify-content-center col-8 standard-border-bottom">
@@ -78,22 +47,71 @@ const RegisterForm = () => {
 
                 <Form.Group className="mb-2" controlId="formName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter your name" onChange={e => setName(e.target.value)} />
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Enter your name" 
+                        {...register("name", { required: "Name is required" })} 
+                    />
+                    {errors.name && (
+                        <Form.Text className="text-danger">
+                            {errors.name.message}
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={e => setEmail(e.target.value)} />
+                    <Form.Control 
+                        type="email" 
+                        placeholder="Enter email" 
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                        })}
+                    />
+                    {errors.email && (
+                        <Form.Text className="text-danger">
+                            {errors.email.message}
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                    <Form.Control 
+                        type="password" 
+                        placeholder="Password" 
+                        {...register("password", {
+                            required: 'Password is required',
+                            minLength: {value: 6, message: "Password must have at least 6 characters"}
+                        })}
+                    />
+                    {errors.password && (
+                        <Form.Text className="text-danger">
+                            {errors.password.message}
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicPasswordConfirm">
                     <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type="password" placeholder="Confirm password" onChange={e => setconfirmPassword(e.target.value)} />
+                    <Form.Control 
+                        type="password" 
+                        placeholder="Confirm password" 
+                        {...register("confirmPassword", {
+                            required: "Confirm password is required",
+                            validate: (val) => {
+                                if (watch('password') !== val) {
+                                    return "Your passwords do not match";
+                                }
+                            }
+                        })}
+                    />
+                    {errors.confirmPassword && (
+                        <Form.Text className="text-danger">
+                            {errors.confirmPassword.message}
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-2 d-flex flex-row-reverse" controlid="formLogin">
@@ -103,7 +121,7 @@ const RegisterForm = () => {
                 </Form.Group>
 
                 <div className="d-flex justify-content-center">
-                    <Button variant="standard" type="button" disabled={allowRegister()} onClick={handleSubmit}>
+                    <Button variant="standard" type="submit">
                         Register
                     </Button>
                 </div>

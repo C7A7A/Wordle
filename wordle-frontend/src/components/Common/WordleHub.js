@@ -12,6 +12,7 @@ export const startConnection = async (userName, room, actions) => {
 
         await connection.start();
         console.log("START_GAME");
+        console.log("username:", userName);
         await connection.invoke("StartGame", {userName, room});
 
         actions.updateUserConnection({connection: connection});
