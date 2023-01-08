@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BoardRow from "./BoardRow";
 
-const Board = ({answerStatuses, player, attemptNumber}) => {
+const Board = ({answerStatuses, player, attemptNumber, activePlayer}) => {
     const { state } = useStateMachine();
     const navigate = useNavigate();
 
@@ -14,20 +14,17 @@ const Board = ({answerStatuses, player, attemptNumber}) => {
         }
     }, [navigate, player])
 
-    const renderRows = () => {
-        return 
-    }
-
     return (
         <div className="d-flex justify-content-center align-items-center flex-column">
             <div className='m-2'> {player} </div>
             <div className="d-flex justify-content-center flex-column">
                 {[...Array(6)].map((x, i) =>
                     <BoardRow 
+                        key={i}
                         answerStatuses={answerStatuses[i]} 
                         currentUser={state.currentUser} 
                         rowNumber={i} 
-                        isDisabled={attemptNumber !== i} 
+                        isDisabled={activePlayer ? attemptNumber !== i : true} 
                         attemptNumber={attemptNumber} />
                 )}
             </div>

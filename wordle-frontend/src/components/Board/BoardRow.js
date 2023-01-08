@@ -1,8 +1,11 @@
 import BoardTile from "./BoardTile";
 import { Button, Form } from "react-bootstrap";
 import { checkAnswer, lastAnswer } from "../Common/WordleHub";
+import { useState } from "react";
 
 const BoardRow = ({answerStatuses, currentUser, rowNumber, isDisabled, attemptNumber}) => {
+    const [focusTile, setFocusTile] = useState('');
+
     const moveToNext = (position) => {
         const nextField = document.querySelector(
             `input[name=tile-${rowNumber}-${position + 1}]`
@@ -30,7 +33,12 @@ const BoardRow = ({answerStatuses, currentUser, rowNumber, isDisabled, attemptNu
             for (let i = 0; i < 5; i++) {
                 answer += e.target[i].value;
             }
-            console.log(answer);
+
+            if (answer.includes(" ")) {
+                return;
+            }
+
+            // console.log(answer);
             if (attemptNumber !== 5) {
                 checkAnswer(currentUser.connection, currentUser.name, currentUser.room, answer);
             } else {
@@ -39,12 +47,13 @@ const BoardRow = ({answerStatuses, currentUser, rowNumber, isDisabled, attemptNu
         }}>
             <div className='d-flex'>
                 {[...Array(5)].map((x, i) =>
-                    <BoardTile 
-                        bgColor={answerStatuses[i]} 
+                    <BoardTile
+                        key={i}
+                        bgColor={isDisabled ? answerStatuses[i] : "dark-bg-color"} 
                         row={rowNumber} 
                         position={i} 
-                        disabled={isDisabled} 
-                        autoFocus={isDisabled} 
+                        disabled={isDisabled}
+                        focusTile={focusTile}
                         moveToNext={moveToNext} 
                         moveToPrevious={moveToPrevious} />
                 )}

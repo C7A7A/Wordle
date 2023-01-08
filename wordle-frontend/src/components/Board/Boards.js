@@ -47,7 +47,7 @@ const Boards = () => {
 
     useEffect(() => {
         if (state.rematch) {
-            console.log('empty boards data');
+            // console.log('empty boards data');
             setAnswerStatuses(initWordleArray());
             setAttempNumber(0);
             setOpponentAnswerResponse(initWordleArray());
@@ -81,6 +81,7 @@ const Boards = () => {
                     <Board
                         answerStatuses={answerStatuses}
                         player={state.currentUser.name}
+                        activePlayer={true}
                         attemptNumber={attemptNumber}
                     />
                 </div>
@@ -88,6 +89,7 @@ const Boards = () => {
                     <Board 
                         answerStatuses={opponentAnswerStatuses}
                         player={state.opponent.name}
+                        activePlayer={false}
                         attemptNumber={attemptNumber}
                     />
                 </div>

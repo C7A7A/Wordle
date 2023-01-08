@@ -16,12 +16,12 @@ const Game = () => {
         setRoomCode(room)
 
         if (!state.currentUser.name && state.opponent.name === "Opponent") {
-            console.log("GENERATING")
+            // console.log("GENERATING")
             const guestName = generateGuestName(5)
             actions.updateUserName({name: guestName});
             
-            console.log("JOINING ROOM")
-            console.log(guestName, room);
+            // console.log("JOINING ROOM")
+            // console.log(guestName, room);
             joinRoom(guestName, room, actions);
         }   
     

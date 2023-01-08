@@ -14,7 +14,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
 
     useEffect(() => {
         if (room && state.currentUser.name) {
-            console.log("currentuser:", state.currentUser)
+            // console.log("currentuser:", state.currentUser)
             startConnection(state.currentUser.name, room, actions);
             navigate(`/game/${room}`);
         }
@@ -61,7 +61,7 @@ const PlayButtons = ({guestName, email, password, handleLogin}) => {
             .then(roomCode => {
                 setRoom(roomCode);
             })
-            .catch(error => console.log(error))
+            .catch(error => console.error(error))
     }
 
     return (

@@ -26,7 +26,7 @@ const AuthenticatePlayer = () => {
                     let token = response.data
                     
                     getCurrentUser(token).then(data => {
-                        console.log("data:", data)
+                        // console.log("data:", data)
                         actions.updateUser({
                             isLoggedIn: true,
                             email: email,

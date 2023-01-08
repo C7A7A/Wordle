@@ -11,8 +11,8 @@ export const startConnection = async (userName, room, actions) => {
         handleHubMethods(connection, userName, actions);
 
         await connection.start();
-        console.log("START_GAME");
-        console.log("username:", userName);
+        // console.log("START_GAME");
+        // console.log("username:", userName);
         await connection.invoke("StartGame", {userName, room});
 
         actions.updateUserConnection({connection: connection});
@@ -32,7 +32,7 @@ export const joinRoom = async (userName, room, actions) => {
         handleHubMethods(connection, userName, actions);
 
         await connection.start();
-        console.log("JOIN_ROOM");
+        // console.log("JOIN_ROOM");
         await connection.invoke("JoinRoom", {userName, room});
 
         actions.updateUserConnection({connection: connection});
@@ -43,7 +43,7 @@ export const joinRoom = async (userName, room, actions) => {
 }
 
 export const checkAnswer = async (connection, userName, room, answer) => {
-    console.log(connection, userName, room, answer);
+    // console.log(connection, userName, room, answer);
     try {
         await connection.invoke("CheckAnswer", {userName, room}, answer);
     } catch(error) {
@@ -61,7 +61,7 @@ export const lastAnswer = async (connection, userName, room, answer) => {
 }
 
 export const playAgain = async (connection, userName, room) => {
-    console.log("PLAY_AGAIN");
+    // console.log("PLAY_AGAIN");
     try {
         await connection.invoke("PlayAgain", {userName, room});
     } catch(error) {
@@ -70,7 +70,7 @@ export const playAgain = async (connection, userName, room) => {
 }
 
 const handleHubMethods = (connection, currentUserName, actions) => {
-    console.log('handleHubMethods:', actions)
+    // console.log('handleHubMethods:', actions)
 
     connection.on("StartGame", (userName, message) => {
         console.log(userName, message);
@@ -78,7 +78,7 @@ const handleHubMethods = (connection, currentUserName, actions) => {
 
     connection.on("JoinRoom", (_, userName, message, gameHost) => {
         console.log(userName, message, gameHost);
-        console.log('current: ', currentUserName);
+        // console.log('current: ', currentUserName);
 
         if (currentUserName === gameHost) {
             actions.updateOpponentName({name: userName});
@@ -88,19 +88,19 @@ const handleHubMethods = (connection, currentUserName, actions) => {
     });
 
     connection.on("CheckAnswer", (userName, response) => {
-        console.log(userName, response);
+        // console.log(userName, response);
         setAnswerResponse(currentUserName, userName, actions, response);
     });
 
     connection.on("CorrectAnswer", (userName, response, answer) => {
-        console.log(userName, response, answer);
+        // console.log(userName, response, answer);
         setAnswerResponse(currentUserName, userName, actions, response);
         actions.setAnswerWordle({wordle: answer});
         updateUserStatus(currentUserName, userName, actions);
     });
 
     connection.on("LastAnswer", (userName, response, answer) => {
-        console.log(userName, response, answer);
+        // console.log(userName, response, answer);
         setAnswerResponse(currentUserName, userName, actions, response);
         actions.setAnswerWordle({wordle: answer});
         updateUserStatusOnLastAnswer(currentUserName, userName, actions);
