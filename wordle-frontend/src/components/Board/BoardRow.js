@@ -38,11 +38,16 @@ const BoardRow = ({answerStatuses, currentUser, rowNumber, isDisabled, attemptNu
             }
         }}>
             <div className='d-flex'>
-                <BoardTile bgColor={answerStatuses[0]} row={rowNumber} position={0} disabled={isDisabled} autoFocus={isDisabled} moveToNext={moveToNext} moveToPrevious={moveToPrevious} />
-                <BoardTile bgColor={answerStatuses[1]} row={rowNumber} position={1} disabled={isDisabled} autoFocus={isDisabled} moveToNext={moveToNext} moveToPrevious={moveToPrevious} />
-                <BoardTile bgColor={answerStatuses[2]} row={rowNumber} position={2} disabled={isDisabled} autoFocus={isDisabled} moveToNext={moveToNext} moveToPrevious={moveToPrevious} />
-                <BoardTile bgColor={answerStatuses[3]} row={rowNumber} position={3} disabled={isDisabled} autoFocus={isDisabled} moveToNext={moveToNext} moveToPrevious={moveToPrevious}/>
-                <BoardTile bgColor={answerStatuses[4]} row={rowNumber} position={4} disabled={isDisabled} autoFocus={isDisabled} moveToNext={moveToNext} moveToPrevious={moveToPrevious} />
+                {[...Array(5)].map((x, i) =>
+                    <BoardTile 
+                        bgColor={answerStatuses[i]} 
+                        row={rowNumber} 
+                        position={i} 
+                        disabled={isDisabled} 
+                        autoFocus={isDisabled} 
+                        moveToNext={moveToNext} 
+                        moveToPrevious={moveToPrevious} />
+                )}
             </div>
 
             <Button className='d-none' type='submit'></Button>
