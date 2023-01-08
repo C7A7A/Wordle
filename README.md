@@ -43,66 +43,66 @@ I created this project to learn ASP .NET Core, communication via websockets and 
 
 #### Register
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/register.PNG" alt="Register" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/register.PNG" alt="Register" />
 </div>
 
 #### Form validation
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/register-validation.PNG" alt="Register validation" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/register-validation.PNG" alt="Register validation" />
 </div>
 
 #### Choose name
 You can play as logged user or as guest.
 
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/login.PNG" alt="Register" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/login.PNG" alt="Register" />
 </div>
 
 #### Play as host
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/login-host.PNG" alt="Login" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/login-host.PNG" alt="Login" />
 </div>
 
 #### Waiting for opponent
 You can copy room code or whole url. Game will start when someone joins room by url or by entering room code in app.
 
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/waiting-for-opponent.PNG" alt="Waiting for opponent" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/waiting-for-opponent.PNG" alt="Waiting for opponent" />
 </div>
 
 #### Join room
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/join-room.PNG" alt="Enter room" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/join-room.PNG" alt="Enter room" />
 </div>
 
 #### Start game
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game.PNG" alt="Start game" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game.PNG" alt="Start game" />
 </div>
 
 #### 2 players game start
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-2-players.PNG" alt="2 players game" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-2-players.PNG" alt="2 players game" />
 </div>
 
 #### Game in progress
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-in-game.PNG" alt="Game in progress" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-in-game.PNG" alt="Game in progress" />
 </div>
 
 #### Game over
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-over.PNG" alt="Game Over" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-over.PNG" alt="Game Over" />
 </div>
 
 #### Play again
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-play-again.PNG" alt="Play again" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-play-again.PNG" alt="Play again" />
 </div>
 
 #### Game over on disconnect
 <div align="center">
-<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-over-disconnect.PNG" alt="Disconnect" width="960" height="540" />
+<img src="https://github.com/C7A7A/Wordle/blob/main/wordle-frontend/public/images/game-over-disconnect.PNG" alt="Disconnect" />
 </div>
   
 ### React code
